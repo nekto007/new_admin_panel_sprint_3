@@ -1,9 +1,11 @@
+import logging
 import os
 import time
-import logging
+
 import psycopg2.extras
 from dotenv import load_dotenv
 from redis import Redis
+
 from etl import ETLProcess
 from state import State, RedisStorage
 
