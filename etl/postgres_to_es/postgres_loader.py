@@ -3,6 +3,7 @@ from logging import getLogger
 
 import psycopg2
 from dotenv import load_dotenv
+from settings import BATCH_SIZE
 
 load_dotenv()
 
@@ -83,7 +84,7 @@ GROUP BY fw.id
                     as modified
                 FROM content.film_work
                 WHERE modified > '{state}'
-                LIMIT {os.environ.get('BATCH_SIZE')};
+                LIMIT {BATCH_SIZE};
                 """)  # noqa: S608
             return self._cursor.fetchall()
         except SyntaxError as e:
@@ -100,7 +101,7 @@ GROUP BY fw.id
                 FROM content.person
                 JOIN content.person_film_work pfw on person.id = pfw.person_id
                 WHERE modified > '{state}'
-                LIMIT {os.environ.get('BATCH_SIZE')};
+                LIMIT {BATCH_SIZE};
                 """)  # noqa: S608
             return self._cursor.fetchall()
         except SyntaxError as e:
@@ -117,7 +118,7 @@ GROUP BY fw.id
                 FROM content.genre
                 JOIN  content.genre_film_work gfw on genre.id = gfw.genre_id
                 WHERE modified > '{state}'
-                LIMIT {os.environ.get('BATCH_SIZE')};
+                LIMIT {BATCH_SIZE};
                 """)  # noqa: S608
             return self._cursor.fetchall()
         except SyntaxError as e:
