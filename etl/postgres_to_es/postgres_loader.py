@@ -61,7 +61,7 @@ WHERE fw.id IN {films_works_id}
 GROUP BY fw.id
 """)  # noqa: S608
             return self._cursor.fetchall()
-        except Exception as e:
+        except SyntaxError as e:
             raise e
 
     def get_films_id(self, data: list) -> tuple:
@@ -70,7 +70,7 @@ GROUP BY fw.id
             for elem in data:
                 films_id.append(elem.get('id'))
             return films_id, data[-1].get('modified')
-        except Exception as e:
+        except SyntaxError as e:
             raise e
 
     def load_film_work(self, state: str):
@@ -86,7 +86,7 @@ GROUP BY fw.id
                 LIMIT {os.environ.get('BATCH_SIZE')};
                 """)  # noqa: S608
             return self._cursor.fetchall()
-        except Exception as e:
+        except SyntaxError as e:
             raise e
 
     def load_person(self, state: str):
@@ -103,7 +103,7 @@ GROUP BY fw.id
                 LIMIT {os.environ.get('BATCH_SIZE')};
                 """)  # noqa: S608
             return self._cursor.fetchall()
-        except Exception as e:
+        except SyntaxError as e:
             raise e
 
     def load_genre(self, state: str):
@@ -120,5 +120,5 @@ GROUP BY fw.id
                 LIMIT {os.environ.get('BATCH_SIZE')};
                 """)  # noqa: S608
             return self._cursor.fetchall()
-        except Exception as e:
+        except SyntaxError as e:
             raise e
