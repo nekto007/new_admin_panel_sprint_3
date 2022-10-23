@@ -2,6 +2,7 @@ import json
 import time
 from functools import wraps
 from logging import getLogger
+from typing import Any, Callable, TypeVar, Union
 
 import psycopg2.extensions
 import requests
@@ -9,8 +10,11 @@ import requests
 from postgres_loader import PostgresLoader
 from state import State
 
+F = TypeVar('F', bound=Callable[..., Any])
 
-def backoff(logger, start_sleep_time=0.1, factor=2, border_sleep_time=10):
+
+def backoff(logger, start_sleep_time: Union[int, float] = 0.1, factor: Union[int, float] = 2,
+            border_sleep_time: Union[int, float] = 10) -> Callable[[F], F]:
     """
     Функция используется для повторного выполнения,
     в случае если возникла ошибка.
@@ -18,7 +22,7 @@ def backoff(logger, start_sleep_time=0.1, factor=2, border_sleep_time=10):
     до граничного времени ожидания (border_sleep_time)
     """
 
-    def func_wrapper(func):
+    def func_wrapper(func: Callable[[F], F]) -> Callable[[F], F]:
         @wraps(func)
         def inner(*args, **kwargs):
             n = 1
