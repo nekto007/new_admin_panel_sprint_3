@@ -1,12 +1,12 @@
 import logging
-import os
 import time
-from settings import dsl
+
 import psycopg2.extras
-# from dotenv import load_dotenv
 from redis import Redis
 
 from etl import ETLProcess
+from settings import ELASTIC_HOST, ELASTIC_PORT, TIME_SLEEP, REDIS_HOST, REDIS_PORT
+from settings import dsl
 from state import State, RedisStorage
 
 
@@ -24,12 +24,12 @@ if __name__ == '__main__':
     logger = logging.getLogger()
     logging.basicConfig(level=logging.INFO)
 
-    elastic_host = os.environ.get('ELASTIC_HOST', 'localhost')
+    elastic_host = ELASTIC_HOST
     elastic_url = 'http://{}'.format(elastic_host)
-    elastic_port = os.environ.get('ELASTIC_PORT', 9200)
-    time_sleep = int(os.environ.get('TIME_SLEEP', 100))
-    redis_host = os.environ.get('REDIS_HOST', 'localhost')
-    redis_port = os.environ.get('REDIS_PORT', '6379')
+    elastic_port = ELASTIC_PORT
+    time_sleep = TIME_SLEEP
+    redis_host = REDIS_HOST
+    redis_port = REDIS_PORT
     file_storage = RedisStorage(Redis(
         host=redis_host, port=redis_port, db=0))
     table_names = ['film_work', 'person', 'genre']
