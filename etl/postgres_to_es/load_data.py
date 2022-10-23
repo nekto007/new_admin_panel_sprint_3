@@ -1,15 +1,13 @@
 import logging
 import os
 import time
-
+from settings import dsl
 import psycopg2.extras
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from redis import Redis
 
 from etl import ETLProcess
 from state import State, RedisStorage
-
-load_dotenv()
 
 
 def load_data(url: str, port: int, table_name: str) -> None:
@@ -25,13 +23,7 @@ def load_data(url: str, port: int, table_name: str) -> None:
 if __name__ == '__main__':
     logger = logging.getLogger()
     logging.basicConfig(level=logging.INFO)
-    dsl = {
-        'dbname': os.environ.get('DB_NAME'),
-        'user': os.environ.get('DB_USER'),
-        'password': os.environ.get('DB_PASSWORD'),
-        'host': os.environ.get('DB_HOST'),
-        'port': os.environ.get('DB_PORT')
-    }
+
     elastic_host = os.environ.get('ELASTIC_HOST', 'localhost')
     elastic_url = 'http://{}'.format(elastic_host)
     elastic_port = os.environ.get('ELASTIC_PORT', 9200)
