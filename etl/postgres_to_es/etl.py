@@ -11,6 +11,13 @@ from state import State
 
 
 def backoff(logger, start_sleep_time=0.1, factor=2, border_sleep_time=10):
+    """
+    Функция используется для повторного выполнения,
+    в случае если возникла ошибка.
+    Использует наивный экспоненциальный рост времени повтора (factor)
+    до граничного времени ожидания (border_sleep_time)
+    """
+
     def func_wrapper(func):
         @wraps(func)
         def inner(*args, **kwargs):
